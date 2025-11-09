@@ -1,1 +1,0 @@
-# codeit_ai_rfp_rag_assistant
