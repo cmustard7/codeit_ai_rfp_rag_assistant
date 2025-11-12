@@ -4,3 +4,4 @@
 *.key
 *.pem
 api_key.txt
+.ipynb_checkpoints/
