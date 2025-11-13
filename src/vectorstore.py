@@ -13,7 +13,7 @@ def build_vector_store(chunks):
     vector_store = Chroma(
         collection_name="project_collection",
         embedding_function=emb,
-        persist_directory=persist_dir,  # 절대경로지만 코드엔 노출 안됨
+        persist_directory=persist_dir,
     )
 
     BATCH_SIZE = 100
