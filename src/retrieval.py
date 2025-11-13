@@ -13,27 +13,6 @@ def format_docs(docs):
             formatted.append(d.page_content)
     return "\n\n".join(formatted)
 
-def split_question_by_org(question: str):
-    """
-    비교형 질문만 분리.
-    문장에 비교형 키워드가 없으면 split 시도조차 하지 않음.
-    """
-    # 비교형 패턴 키워드 목록
-    compare_keywords = ["이랑", "및", "vs", "VS", "비교"]
-
-    # 🔹 조건: compare_keywords 중 하나라도 문장 안에 있어야 split 시도
-    if not any(kw in question for kw in compare_keywords):
-        return [question]
-
-    # 🔹 있을 때만 split
-    parts = re.split(r"(?:이랑|및|vs|VS|비교)", question)
-    parts = [p.strip() for p in parts if len(p.strip()) > 3]
-
-    # 🔹 두 부분 이상이면 비교형으로 간주
-    if len(parts) >= 2:
-        return parts[:2]
-    return [question]
-
 def find_docs_by_question(input_data, vector_store, retriever, top_n=1):
     """rag_chain은 여전히 question만 전달. 내부에서 비교형이면 자동 처리"""
     question = input_data["question"] if isinstance(input_data, dict) else input_data
