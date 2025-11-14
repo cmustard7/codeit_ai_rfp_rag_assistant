@@ -1,10 +1,8 @@
 import json
 from langchain_openai import ChatOpenAI
 
+from src.llm_config import classifier_llm
 
-# --------------------------
-# ① system prompt
-# --------------------------
 classifier_system_prompt = """
 너는 한국어 RAG 시스템을 위한 질문 분석기다.
 
@@ -21,9 +19,6 @@ classifier_system_prompt = """
 - JSON 외 다른 텍스트는 출력하지 마라
 """
 
-# --------------------------
-# ② user prompt 생성 함수
-# --------------------------
 def classifier_user_prompt(question: str):
     return f"""
 다음 질문을 분석해서 JSON으로만 답하세요:
@@ -31,24 +26,13 @@ def classifier_user_prompt(question: str):
 질문: "{question}"
 """
 
-# --------------------------
-# ③ LLM 객체 (GPT-5-nano)
-# --------------------------
-llm_classifier = ChatOpenAI(
-    model="gpt-5-nano",
-    temperature=0.0
-)
-
-# --------------------------
-# ④ 질문 → JSON 변환 함수
-# --------------------------
 def classify_question_with_llm(question: str):
     messages = [
         {"role": "system", "content": classifier_system_prompt},
         {"role": "user", "content": classifier_user_prompt(question)}
     ]
 
-    raw = llm_classifier.invoke(messages).content
+    raw = classifier_llm.invoke(messages).content
 
     try:
         return json.loads(raw)
@@ -58,5 +42,5 @@ def classify_question_with_llm(question: str):
             {"role": "system", "content": "아래 텍스트에서 JSON만 추출해서 정확히 반환해라."},
             {"role": "user", "content": raw}
         ]
-        fixed = llm_classifier.invoke(fix_messages).content
+        fixed = classifier_llm.invoke(fix_messages).content
         return json.loads(fixed)

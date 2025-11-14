@@ -1,4 +1,5 @@
-import os, unicodedata
+import os
+import pdfplumber
 import pandas as pd
 from langchain_core.documents import Document
 from langchain_community.document_loaders import PyPDFLoader
@@ -41,7 +42,6 @@ def get_hwp_text(filename):
                 text += "\n"
             i += 4 + rec_len
         text += "\n"
-
     cleaned = re.sub(r'[^\uAC00-\uD7A3\u3131-\u318F\u1100-\u11FF\s0-9A-Za-z.,()「」<>·-]', '', text)
     return cleaned.strip()
 
@@ -91,21 +91,51 @@ def get_metadata_from_csv(filename, meta_df):
         "end_date": str(row.get("입찰 참여 마감일", "")),
     }
 
+def clean_text_for_rag(text):
+    # 1) CRLF → LF 통일
+    text = text.replace('\r\n', '\n').replace('\r', '\n')
+
+    # 2) 제어문자 삭제 (단, \n은 남김)
+    # \x00-\x08, \x0B-\x0C, \x0E-\x1F, \x7F 만 제거
+    text = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]', '', text)
+
+    # 3) 각 줄 오른쪽 공백만 정리 (왼쪽은 유지해도 됨, 제목 들여쓰기 살릴거면)
+    lines = [line.rstrip() for line in text.split('\n')]
+    text = "\n".join(lines)
+
+    # 4) 3줄 이상 빈 줄 → 2줄로 축소
+    text = re.sub(r'\n{3,}', '\n\n', text)
+
+    return text.strip()
+
 # ---------------------------------------------------------
 # 파일 로더
 # ---------------------------------------------------------
 def load_hwp(filepath, meta_df):
     text = get_hwp_text(filepath)
+    text = clean_text_for_rag(text)
     meta = get_metadata_from_csv(os.path.basename(filepath), meta_df)
     return [Document(page_content=text, metadata=meta)]
 
 def load_pdf(filepath, meta_df):
-    loader = PyPDFLoader(filepath)
-    docs = loader.load()
+    documents = []
     meta = get_metadata_from_csv(os.path.basename(filepath), meta_df)
-    for d in docs:
-        d.metadata.update(meta)
-    return docs
+
+    with pdfplumber.open(filepath) as pdf:
+        for idx, page in enumerate(pdf.pages):
+            page_text = page.extract_text(x_tolerance=1, y_tolerance=2) or ""
+            page_text = clean_text_for_rag(page_text)
+
+            documents.append(
+                Document(
+                    page_content=page_text,
+                    metadata={
+                        **meta,
+                        "page": idx + 1   # ← 페이지 정보
+                    }
+                )
+            )
+    return documents
 
 def load_document(filepath, meta_df):
     ext = os.path.splitext(filepath)[1].lower()

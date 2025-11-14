@@ -1,10 +1,19 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
+import pickle
 
 import src.document_loader as loader
 
 data_path = './Data'
 meta_df = loader.load_metadata(f"{data_path}/data_list.csv")
+
+def save_chunks(chunks, path="./Data/chunks.pkl"):
+    with open(path, "wb") as f:
+        pickle.dump(chunks, f)
+
+def load_chunks(path="./Data/chunks.pkl"):
+    with open(path, "rb") as f:
+        return pickle.load(f)
 
 def load_and_chunk_all_docs(data_path):
     text_splitter = RecursiveCharacterTextSplitter(
