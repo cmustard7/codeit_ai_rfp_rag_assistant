@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 입찰메이트 RFP RAG 시스템
 **코드잇 AI 4기 4팀 - 공공입찰 컨설팅 스타트업 ‘입찰메이트(BidMate)’ AI 엔지니어링 팀**
 
@@ -114,3 +115,90 @@ Software:
 
 
 ##  📊 성과 및 결과
+=======
+# LangGraph RAG Starter
+
+이 프로젝트는 LangGraph 기반으로 RAG 파이프라인을 빠르게 구성하기 위한 최소 템플릿입니다. 기존 `codeit_ai_rfp_rag_assistant` 프로젝트에서 사용한 라이브러리 버전을 그대로 맞췄으며, LangGraph 전용 워크플로를 `src/` 아래에서 정의합니다.
+
+## 구성
+```
+LangGraph_rag/
+├── README.md
+├── requirements.txt
+├── data/
+│   ├── data_list.csv|xlsx   # 기관/사업 메타데이터
+│   ├── files/               # 원본 문서(HWP/PDF/DOCX 등)
+│   ├── questions.json       # 평가용 질문(자동 생성)
+│   ├── results.json         # run_eval 결과
+│   └── vectorstore.json     # 문서 임베딩 캐시
+└── src/
+    ├── build_vectorstore.py # data/files → vectorstore.json 생성
+    ├── data_loader.py       # data_list.* + 문서 본문 로딩
+    ├── document_parser.py   # TXT/PDF/DOCX 파서
+    ├── generate_questions.py # 메타데이터 기반 질문 생성
+    ├── graph_state.py       # LangGraph 상태 정의(TypedDict)
+    ├── nodes/               # LangGraph 노드(question/retrieve/answer/update)
+    ├── run_chat.py          # 대화형 테스트 CLI
+    ├── run_eval.py          # 질문 세트 일괄 평가
+    ├── vector_store.py      # 임베딩 생성/검색 헬퍼
+    └── workflow.py          # LangGraph DAG 정의
+```
+
+## 데이터 준비
+- `data/data_list.csv` 또는 `data/data_list.xlsx` : 기관/사업 메타데이터. 열 이름은 자유롭게 사용하되, 아래 키 중 하나와 매칭되면 자동으로 인식됩니다.
+  - 기관 : `발주 기관`, `발주기관`, `agency`
+  - 사업명 : `사업명`, `project_name`, `title`
+  - 요약 : `사업 요약`, `요약`, `summary`
+- `data/files/` : 실제 문서가 위치할 디렉터리(향후 문서 로딩/벡터스토어 구성에 사용).
+
+## 빠른 시작
+1. 가상환경 생성 및 패키지 설치
+   ```bash
+   python -m venv .venv
+   .venv/Scripts/activate   # Windows
+   pip install -r requirements.txt
+   ```
+2. `.env` 파일에 OpenAI API Key 설정
+   ```bash
+   echo OPENAI_API_KEY=sk-... > .env
+   ```
+   (기존 환경 변수 사용도 가능하며, `python-dotenv`가 자동으로 `.env`를 읽습니다.)
+3. 사업 메타데이터 기반 질문 생성
+   ```bash
+   python -m src.generate_questions
+   # (--limit, --follow-up 등의 옵션으로 샘플 수/후속 질문 생성 여부 조정 가능)
+   ```
+4. 벡터스토어 생성 (문서를 LLM이 참조하도록, 최초 1회 또는 데이터 변경 시)
+   ```bash
+   python -m src.build_vectorstore
+   # 결과: data/vectorstore.json
+   ```
+5. LangGraph 워크플로 실행
+   ```bash
+   python -m src.run_eval
+   # (--questions, --output 옵션으로 경로 커스터마이징 가능)
+   ```
+6. 대화형 테스트(선택)
+   ```bash
+   python -m src.run_chat
+   # 'exit' 입력 시 종료, --reset 옵션으로 매 질문마다 상태 초기화 가능
+   ```
+
+### 주요 CLI 옵션
+- `generate_questions`
+  - `--limit <int>`: data_list 상단에서 몇 개의 행을 사용할지 지정 (기본 3).
+  - `--follow-up`: 각 사업마다 후속 질문 추가 생성 여부(플래그).
+  - `--csv/--xlsx/--output <path>`: 입력/출력 경로를 바꾸고 싶을 때 지정.
+- `run_eval`
+  - `--questions <path>`: 기본 `data/questions.json` 대신 다른 질문 파일 사용.
+  - `--output <path>`: 결과 JSON 저장 위치 지정(기본 `data/results.json`).
+- `run_chat`
+  - `--reset`: 매 질문마다 상태 초기화(기본은 세션 상태 유지).
+- `build_vectorstore`
+  - `--output <path>`: 생성된 벡터스토어 JSON 위치 지정(기본 `data/vectorstore.json`).
+
+## TODO
+- `data/files` 내 HWP 등 특수 포맷 파서 보강
+- 자동 평가 지표/스코어 산출 스크립트 추가
+- run_chat UI/로그 저장 등 편의 기능 확장
+>>>>>>> 462ebe9 (Initial LangGraph baseline)
