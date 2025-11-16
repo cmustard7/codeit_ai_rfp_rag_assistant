@@ -1,4 +1,4 @@
-"""Utility helpers for reading data_list.* rows into normalized entries."""
+"""data_list.* 행을 정규화된 엔트리로 변환하는 유틸 함수 모음."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def pick_value(row: pd.Series, keys: List[str]) -> str:
 
 
 def load_project_entries(csv_path: Path = DEFAULT_CSV, xlsx_path: Path = DEFAULT_XLSX) -> List[Dict[str, str]]:
-    """Return project dictionaries enriched with parsed document text."""
+    """문서 본문까지 포함한 사업 정보를 리스트 형태로 반환한다."""
     df = load_dataframe(csv_path, xlsx_path)
     entries: List[Dict[str, str]] = []
     for _, row in df.iterrows():

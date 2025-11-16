@@ -1,4 +1,4 @@
-"""Simple JSON-based vector store built on OpenAI embeddings."""
+"""OpenAI 임베딩을 사용해 JSON 파일로 관리하는 간단한 벡터스토어."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class VectorChunk:
 
 
 def _chunk_text(text: str, size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> Iterable[str]:
-    """Yield overlapping chunks so embeddings capture long documents."""
+    """긴 문서를 겹치는 청크로 잘라 임베딩 품질을 유지한다."""
     if not text:
         return []
     text = text.strip()
@@ -53,7 +53,7 @@ def _ensure_embeddings() -> OpenAIEmbeddings:
 
 
 def build_vector_chunks() -> List[VectorChunk]:
-    """Split every project entry into VectorChunk instances."""
+    """각 사업 엔트리를 VectorChunk 목록으로 나눈다."""
     entries = load_project_entries()
     chunks: List[VectorChunk] = []
     for idx, entry in enumerate(entries):
@@ -79,7 +79,7 @@ def build_vector_chunks() -> List[VectorChunk]:
 
 
 def create_vectorstore(output_path: Path = DEFAULT_VECTORSTORE_PATH) -> Path:
-    """Generate embeddings and persist them as a JSON vectorstore."""
+    """임베딩을 생성해 JSON 벡터스토어로 저장한다."""
     chunks = build_vector_chunks()
     if not chunks:
         raise ValueError("생성할 텍스트 chunk가 없습니다.")
@@ -110,7 +110,7 @@ def create_vectorstore(output_path: Path = DEFAULT_VECTORSTORE_PATH) -> Path:
 
 
 def load_vectorstore(path: Path = DEFAULT_VECTORSTORE_PATH):
-    """Load the JSON vectorstore and return numpy-backed search data."""
+    """JSON 벡터스토어를 읽어 numpy 기반 검색용 구조로 반환한다."""
     if not path.exists():
         raise FileNotFoundError(f"{path} 벡터스토어 파일이 없습니다. 먼저 build_vectorstore.py를 실행하세요.")
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -147,7 +147,7 @@ def _cosine_sim(query_vec: Sequence[float], doc_matrix: np.ndarray) -> np.ndarra
 
 
 def search_vectorstore(question: str, store: dict, top_k: int = 3) -> List[Dict[str, str]]:
-    """Return top_k chunks with cosine similarity scores."""
+    """코사인 유사도를 기준으로 상위 top_k 청크를 반환한다."""
     embeddings = _ensure_embeddings()
     query_vec = embeddings.embed_query(question)
     scores = _cosine_sim(query_vec, store["normalized"])

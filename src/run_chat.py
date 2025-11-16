@@ -1,4 +1,4 @@
-"""Interactive CLI shell for LangGraph RAG."""
+"""LangGraph RAG 파이프라인을 대화형으로 시험할 수 있는 CLI."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from .workflow import build_workflow
 
 
 def init_state() -> GraphState:
-    """Create a clean state so multiple chat sessions behave consistently."""
+    """여러 채팅 세션에서 일관되게 사용할 초기 상태를 만든다."""
     return {
         "agency": None,
         "project": None,

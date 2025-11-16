@@ -1,4 +1,4 @@
-"""Best-effort document loaders for data/files."""
+"""data/files 아래 문서를 가능한 선에서 텍스트로 변환하는 모듈."""
 
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ def _read_docx(path: Path) -> str:
 
 @lru_cache(maxsize=256)
 def extract_text(file_name: str) -> str:
-    """Load and cache text for the given file name under data/files."""
+    """data/files 안의 파일명을 받아 텍스트를 읽고 캐시한다."""
     if not file_name:
         return ""
     path = (FILES_ROOT / file_name).resolve()

@@ -1,4 +1,4 @@
-"""Batch evaluator that runs the LangGraph workflow over a question set."""
+"""질문 집합에 LangGraph 워크플로를 적용해 일괄 평가하는 스크립트."""
 
 from __future__ import annotations
 
@@ -17,13 +17,13 @@ DEFAULT_OUTPUT_PATH = Path("data/results.json")
 
 
 def load_questions(path: Path):
-    """Load question entries from the given JSON file."""
+    """질문 JSON 파일에서 질문 목록을 읽어 반환한다."""
     data = json.loads(path.read_text(encoding="utf-8"))
     return data.get("questions", [])
 
 
 def parse_arguments() -> argparse.Namespace:
-    """Return parsed CLI arguments so the script can be imported easily."""
+    """CLI 인자를 파싱해 외부에서 재사용하기 쉽게 반환한다."""
     parser = argparse.ArgumentParser(description="LangGraph RAG 평가")
     parser.add_argument(
         "--questions",

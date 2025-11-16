@@ -1,4 +1,4 @@
-"""CLI helper that builds the vectorstore JSON from data/files."""
+"""data/files 문서를 기반으로 벡터스토어 JSON을 만드는 CLI."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from .vector_store import DEFAULT_VECTORSTORE_PATH, create_vectorstore
 
 
 def main() -> None:
-    """Entry point for building/updating vectorstore.json."""
+    """vectorstore.json을 생성하거나 갱신하는 엔트리 포인트."""
     parser = argparse.ArgumentParser(description="LangGraph 벡터스토어 생성기")
     parser.add_argument(
         "--output",

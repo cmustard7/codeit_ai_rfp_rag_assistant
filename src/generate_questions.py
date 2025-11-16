@@ -1,4 +1,4 @@
-"""Utility to create evaluation questions from data_list metadata."""
+"""data_list 메타데이터를 기반으로 평가용 질문을 생성하는 스크립트."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from .data_loader import DEFAULT_CSV, DEFAULT_XLSX, TARGET_COLUMNS, load_datafra
 
 
 def build_question_entries(row: pd.Series, base_idx: int, include_followup: bool) -> List[dict]:
-    """Return primary and optional follow-up questions for a row."""
+    """단일 행에서 기본 질문과 선택적 후속 질문을 만들어 반환한다."""
     agency = pick_value(row, TARGET_COLUMNS["agency"]) or "해당 기관"
     project = pick_value(row, TARGET_COLUMNS["project"]) or "해당 사업"
     summary = pick_value(row, TARGET_COLUMNS["summary"])
