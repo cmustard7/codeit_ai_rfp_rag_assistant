@@ -1,7 +1,0 @@
-{
-  "documents": 100,
-  "chunks": 4869,
-  "missing_files": [],
-  "vectorstore_path": "F:\\codeit_ai_rfp_rag_assistant\\chroma_db",
-  "evaluation": null
-}
