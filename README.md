@@ -118,7 +118,7 @@ Software:
 =======
 # LangGraph RAG Starter
 
-이 프로젝트는 LangGraph 기반으로 RAG 파이프라인을 빠르게 구성하기 위한 최소 템플릿입니다. 기존 `codeit_ai_rfp_rag_assistant` 프로젝트에서 사용한 라이브러리 버전을 그대로 맞췄으며, LangGraph 전용 워크플로를 `src/` 아래에서 정의합니다.
+이 프로젝트는 LangGraph 기반으로 RAG 파이프라인을 빠르게 구성하기 위한 최소 템플릿입니다. LangGraph 전용 워크플로를 `src/` 아래에서 정의합니다.
 
 ## 구성
 ```
