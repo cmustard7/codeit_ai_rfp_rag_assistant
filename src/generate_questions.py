@@ -50,6 +50,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("data/questions.json"))
     parser.add_argument("--limit", type=int, default=100, help="참고할 사업 행 수")
     parser.add_argument(
+        "--shuffle",
+        action="store_true",
+        help="행을 무작위로 섞은 뒤 limit 만큼 추출",
+    )
+    parser.add_argument(
         "--follow-up",
         action="store_true",
         help="각 사업에 대해 후속 질문도 생성",
@@ -60,6 +65,8 @@ def main() -> None:
     if df.empty:
         raise ValueError("데이터가 비어 있습니다.")
 
+    if args.shuffle:
+        df = df.sample(frac=1, random_state=None).reset_index(drop=True)
     questions: List[dict] = []
     base_id = 1
     for _, row in df.head(args.limit).iterrows():
