@@ -48,7 +48,7 @@ def main() -> None:
     parser.add_argument("--csv", type=Path, default=DEFAULT_CSV)
     parser.add_argument("--xlsx", type=Path, default=DEFAULT_XLSX)
     parser.add_argument("--output", type=Path, default=Path("data/questions.json"))
-    parser.add_argument("--limit", type=int, default=3, help="참고할 사업 행 수")
+    parser.add_argument("--limit", type=int, default=100, help="참고할 사업 행 수")
     parser.add_argument(
         "--follow-up",
         action="store_true",
