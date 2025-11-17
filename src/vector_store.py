@@ -6,13 +6,14 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Sequence
+from typing import Dict, List, Sequence
 
 import numpy as np
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings
 
 from .data_loader import load_project_entries
+from .text_chunker import split_into_chunks
 
 DEFAULT_VECTORSTORE_PATH = Path("data/vectorstore.json")
 EMBED_MODEL = os.environ.get("LANGGRAPH_EMBED_MODEL", "text-embedding-3-small")
@@ -26,25 +27,6 @@ class VectorChunk:
     text: str
     metadata: Dict[str, str]
     embedding: List[float]
-
-
-def _chunk_text(text: str, size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> Iterable[str]:
-    """긴 문서를 겹치는 청크로 잘라 임베딩 품질을 유지한다."""
-    if not text:
-        return []
-    text = text.strip()
-    if not text:
-        return []
-    chunks: List[str] = []
-    start = 0
-    length = len(text)
-    while start < length:
-        end = min(length, start + size)
-        chunks.append(text[start:end])
-        if end == length:
-            break
-        start = max(0, end - overlap)
-    return chunks
 
 
 def _ensure_embeddings() -> OpenAIEmbeddings:
@@ -63,7 +45,7 @@ def build_vector_chunks() -> List[VectorChunk]:
             base_texts.append(summary.strip())
         full_text = entry.get("full_text") or entry.get("text_blob") or ""
         if full_text:
-            base_texts.extend(_chunk_text(full_text))
+            base_texts.extend(split_into_chunks(full_text, CHUNK_SIZE, CHUNK_OVERLAP))
         if not base_texts:
             continue
         for part_idx, text in enumerate(base_texts):
