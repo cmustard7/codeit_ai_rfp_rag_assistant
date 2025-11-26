@@ -126,6 +126,7 @@ def retrieve_context(state: GraphState) -> Dict[str, str]:
     top_entries = [entry for _, entry in scored[:RETRIEVAL_TOP_K]] or entries[:1]
 
     context_blocks = []
+    retrieved_docs: List[Dict[str, str]] = []
     try:
         store = _ensure_vector_store()
         vector_hits = search_vectorstore(question, store, top_k=RETRIEVAL_TOP_K)
@@ -135,13 +136,32 @@ def retrieve_context(state: GraphState) -> Dict[str, str]:
                 meta = hit.get("metadata", {})
                 header = f"[벡터] {meta.get('project') or ''} / {meta.get('agency') or ''} (score={hit['score']:.2f})"
                 vector_formatted.append(f"{header}\n{hit['text']}")
+                retrieved_docs.append(
+                    {
+                        "source": "vector",
+                        "file_name": meta.get("file_name", ""),
+                        "project": meta.get("project", ""),
+                        "agency": meta.get("agency", ""),
+                        "score": f"{hit.get('score', 0):.4f}",
+                    }
+                )
             context_blocks.append("\n\n".join(vector_formatted))
     except FileNotFoundError:
         pass
 
-    context_blocks.extend(_format_entry(entry, keywords) for entry in top_entries)
+    for entry in top_entries:
+        context_blocks.append(_format_entry(entry, keywords))
+        retrieved_docs.append(
+            {
+                "source": "metadata",
+                "file_name": entry.get("file_name", ""),
+                "project": entry.get("project", ""),
+                "agency": entry.get("agency", ""),
+                "score": "",
+            }
+        )
     context = "\n\n".join(block for block in context_blocks if block.strip())
     if history := state.get("history_summary"):
         context = f"[이전 요약] {history}\n\n{context}"
 
-    return {"context": context.strip()}
+    return {"context": context.strip(), "retrieved_docs": retrieved_docs}

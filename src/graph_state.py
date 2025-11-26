@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Optional, TypedDict
+from typing import Dict, List, Optional, TypedDict
 
 
 class GraphState(TypedDict, total=False):
@@ -13,3 +13,4 @@ class GraphState(TypedDict, total=False):
     last_answer: str
     context: str
     current_question: str
+    retrieved_docs: List[Dict[str, str]]

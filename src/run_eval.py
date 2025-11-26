@@ -71,6 +71,8 @@ def main():
             "id": entry.get("id"),
             "question": question,
             "answer": state.get("last_answer", ""),
+            "context": state.get("context", ""),
+            "retrieved_docs": state.get("retrieved_docs", []),
         })
 
     payload = {
