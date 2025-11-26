@@ -1,7 +1,7 @@
 import json
 from langchain_openai import ChatOpenAI
 
-from src.llm_config import classifier_llm
+from llm_config import get_llm, log_usage
 
 classifier_system_prompt = """
 너는 한국어 RAG 시스템을 위한 질문 분석기다.
@@ -21,21 +21,25 @@ classifier_system_prompt = """
 
 def classifier_user_prompt(question: str):
     return f"""
-다음 질문을 분석해서 JSON으로만 답하세요:
+    다음 질문을 분석해서 JSON으로만 답하세요:
 
-질문: "{question}"
-"""
+    질문: "{question}"
+    """
 
 def classify_question_with_llm(question: str):
     messages = [
         {"role": "system", "content": classifier_system_prompt},
         {"role": "user", "content": classifier_user_prompt(question)}
     ]
+    classifier_llm = get_llm('classifier')
+    raw = classifier_llm.invoke(messages)
 
-    raw = classifier_llm.invoke(messages).content
+    
 
     try:
-        return json.loads(raw)
+        log_usage('Compare_judge', raw)
+        content = raw.content
+        return json.loads(content)
     except:
         # JSON 파싱 실패하면 다시 정제 시도
         fix_messages = [
@@ -43,4 +47,6 @@ def classify_question_with_llm(question: str):
             {"role": "user", "content": raw}
         ]
         fixed = classifier_llm.invoke(fix_messages).content
-        return json.loads(fixed)
+        log_usage('Compare_judge', fixed)
+        content = fixed.content
+        return json.loads(content)

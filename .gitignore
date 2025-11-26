@@ -1,3 +1,4 @@
 Data/
 chroma_db/
+wandb/
 .env

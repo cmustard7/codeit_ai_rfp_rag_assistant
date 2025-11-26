@@ -1,13 +1,13 @@
 import json
+import time
+import rag_logger as rl
 
-from src.rag_state import RAGState
-from src.llm_config import judge_llm
+from langgraph_base.rag_state import RAGState
+from llm_config import get_llm, log_usage
 
 def _get_page_content(d):
-    # dict 형태
     if isinstance(d, dict):
         return d.get("page_content", "")
-    # LangChain Document 형태
     page = getattr(d, "page_content", "")
     return page
 
@@ -19,6 +19,9 @@ def _get_metadata(doc):
     return {}
 
 def node_score(state: RAGState):
+    """답변 평가 + 상세 로깅"""
+    eval_start = time.time()
+    
     answer = state["answer"]
     question = state["question"]
     docs = state["docs"]
@@ -63,17 +66,42 @@ def node_score(state: RAGState):
     }}
     """
 
+    judge_llm = get_llm('judge')
     judge_raw = judge_llm.invoke(prompt)
     judge_text = judge_raw.content if hasattr(judge_raw, "content") else str(judge_raw)
 
     print("[JUDGE RAW OUTPUT]\n", judge_text)
 
     try:
-        parsed = json.loads(judge_text)
+        # JSON 파싱
+        cleaned = judge_text.replace('```json', '').replace('```', '').strip()
+        parsed = json.loads(cleaned)
         score = float(parsed.get("score", 0.0))
         reason = parsed.get("reason", "")
-    except:
+        parse_success = True
+    except Exception as e:
+        print(f"⚠️ JSON 파싱 실패: {e}")
         score = 0.0
         reason = "JSON 파싱 실패"
+        parse_success = False
 
-    return {"score": score, "evaluate_reason": reason}
+    eval_time = time.time() - eval_start
+    
+    # 토큰 + 비용 로깅
+    log_usage('judge', judge_raw)
+    
+    # 🔥 평가 통계 로깅
+    rl.log_evaluation({
+        "evaluation/time_sec": eval_time,
+        "evaluation/score": score,
+        "evaluation/reason_length": len(reason),
+        "evaluation/parse_success": parse_success,
+        "evaluation/retry_count": state.get('retry', 0),
+        "evaluation/prompt_length": len(prompt),
+        "evaluation/num_docs_evaluated": len(docs)
+    })
+
+    return {
+        "score": score, 
+        "evaluate_reason": reason
+    }

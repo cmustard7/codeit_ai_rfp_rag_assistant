@@ -1,7 +1,8 @@
 import unicodedata, re
 from difflib import SequenceMatcher
+from langchain_core.documents import Document
 
-from src.compare_judge_template import classify_question_with_llm
+from compare_judge_template import classify_question_with_llm
 
 def format_docs(docs):
     formatted = []
@@ -51,8 +52,8 @@ def find_docs_by_question(input_data, vector_store, retriever, top_n=1):
     if not selected_docs:
         print("⚠️ 문서 없음 → retriever fallback 사용")
         return retriever.invoke(question)
-
-    # 🔥 3) 비교형이면 문서 병합해서 반환
+    
+    # 🔥 병합된 content와 metadata를 Document 객체로 변환
     merged_content = "\n\n--- 비교 문서 구분선 ---\n\n".join([c for _, _, c, _ in selected_docs])
     merged_meta = {
         "sources": [m for _, _, _, m in selected_docs],
@@ -63,8 +64,9 @@ def find_docs_by_question(input_data, vector_store, retriever, top_n=1):
         "open_date": " / ".join([m.get("open_date", "미기재") for _, _, _, m in selected_docs]),
         "end_date": " / ".join([m.get("end_date", "미기재") for _, _, _, m in selected_docs])
     }
-
-    return [{"page_content": merged_content, "metadata": merged_meta}]
+    
+    # Document 객체로 반환!
+    return [Document(page_content=merged_content, metadata=merged_meta)]
 
 
 

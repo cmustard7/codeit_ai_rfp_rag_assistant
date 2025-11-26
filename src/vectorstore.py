@@ -2,9 +2,9 @@ import os
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 
-emb = OpenAIEmbeddings(model="text-embedding-3-small")
-
 def build_vector_store(chunks):
+    emb = OpenAIEmbeddings(model="text-embedding-3-small")
+    
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     persist_dir = os.path.join(BASE_DIR, "chroma_db")
 

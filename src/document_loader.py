@@ -1,5 +1,6 @@
 import os
-import pdfplumber
+import unicodedata
+import fitz
 import pandas as pd
 from langchain_core.documents import Document
 from langchain_community.document_loaders import PyPDFLoader
@@ -81,10 +82,10 @@ def get_metadata_from_csv(filename, meta_df):
     doc_type = "제안요청서" if "제안" in str(row.get("텍스트", "")) else "일반문서"
     
     return {
-        "source": base,
+        "source": str(base),
         "org": str(row.get("발주 기관", "미상")).strip(),
         "category": str(row.get("사업명", "미상")).strip(),
-        "doc_type": doc_type,
+        "doc_type": str(doc_type),
         "budget": str(row.get("사업 금액", "")),
         "open_date": str(row.get("공개 일자", "")),
         "start_date": str(row.get("입찰 참여 시작일", "")),
@@ -92,20 +93,24 @@ def get_metadata_from_csv(filename, meta_df):
     }
 
 def clean_text_for_rag(text):
+    text = text.replace('\ufffd', '')
+    
+    text = unicodedata.normalize("NFC", text)
+
     # 1) CRLF → LF 통일
     text = text.replace('\r\n', '\n').replace('\r', '\n')
 
     # 2) 제어문자 삭제 (단, \n은 남김)
     # \x00-\x08, \x0B-\x0C, \x0E-\x1F, \x7F 만 제거
     text = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]', '', text)
-
+    
     # 3) 각 줄 오른쪽 공백만 정리 (왼쪽은 유지해도 됨, 제목 들여쓰기 살릴거면)
     lines = [line.rstrip() for line in text.split('\n')]
     text = "\n".join(lines)
 
     # 4) 3줄 이상 빈 줄 → 2줄로 축소
     text = re.sub(r'\n{3,}', '\n\n', text)
-
+    
     return text.strip()
 
 # ---------------------------------------------------------
@@ -121,20 +126,24 @@ def load_pdf(filepath, meta_df):
     documents = []
     meta = get_metadata_from_csv(os.path.basename(filepath), meta_df)
 
-    with pdfplumber.open(filepath) as pdf:
-        for idx, page in enumerate(pdf.pages):
-            page_text = page.extract_text(x_tolerance=1, y_tolerance=2) or ""
-            page_text = clean_text_for_rag(page_text)
+    doc = fitz.open(filepath)
 
-            documents.append(
-                Document(
-                    page_content=page_text,
-                    metadata={
-                        **meta,
-                        "page": idx + 1   # ← 페이지 정보
-                    }
-                )
+    for idx, page in enumerate(doc):
+        # fitz는 extract_text() 또는 get_text("text")로 추출
+        page_text = page.get_text("text") or ""
+
+        page_text = clean_text_for_rag(page_text)
+
+        documents.append(
+            Document(
+                page_content=page_text,
+                metadata={
+                    **meta,
+                    "page": idx + 1
+                }
             )
+        )
+
     return documents
 
 def load_document(filepath, meta_df):
