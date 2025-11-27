@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFP RAG Demo</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 20px auto; }
+    .dropzone { border: 2px dashed #888; padding: 20px; text-align: center; }
+    .chat { border: 1px solid #ccc; padding: 12px; height: 300px; overflow-y: auto; margin-top: 12px; }
+    .input-row { margin-top: 12px; display: flex; gap: 8px; }
+    textarea { width: 100%; height: 60px; }
+    button { padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>RFP RAG Demo</h1>
+  <div class="dropzone" id="dropzone">
+    파일을 드래그 앤 드랍하거나 아래 버튼으로 업로드하세요 (HWP/PDF)
+    <br />
+    <input type="file" id="fileInput" multiple accept=".hwp,.hwpx,.pdf" />
+  </div>
+  <div>
+    <button id="resetBtn">문서 초기화</button>
+    <span id="status"></span>
+  </div>
+  <div id="chatArea" style="display:none;">
+    <div class="chat" id="chatBox"></div>
+    <div class="input-row">
+      <textarea id="question" placeholder="질문을 입력하세요"></textarea>
+      <button id="sendBtn">질문 보내기</button>
+    </div>
+  </div>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const chatBox = document.getElementById('chatBox');
+    const statusEl = document.getElementById('status');
+    const questionInput = document.getElementById('question');
+    const sendBtn = document.getElementById('sendBtn');
+    const chatArea = document.getElementById('chatArea');
+
+    function addMessage(role, text) {
+      const div = document.createElement('div');
+      div.innerHTML = `<b>${role}:</b> ${text}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function uploadFiles(files) {
+      const formData = new FormData();
+      for (const f of files) formData.append('files', f);
+      const res = await fetch('/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      statusEl.textContent = `업로드 완료: 문서 ${data.docs?.length || 0}개, 청크 ${data.chunks || 0}개`;
+       // 업로드가 성공하면 채팅 UI 노출
+      if ((data.docs?.length || 0) > 0) {
+        chatArea.style.display = 'block';
+      }
+    }
+
+    // 브라우저 기본 드래그 행동 방지
+    window.addEventListener('dragover', e => { e.preventDefault(); });
+    window.addEventListener('drop', e => { e.preventDefault(); });
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); });
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e => {
+      if (e.target.files.length) uploadFiles(e.target.files);
+    });
+
+    document.getElementById('resetBtn').onclick = async () => {
+      await fetch('/reset', { method: 'POST' });
+      statusEl.textContent = '세션 초기화 완료';
+      chatBox.innerHTML = '';
+      chatArea.style.display = 'none';
+    };
+
+    async function sendQuestion() {
+      const q = questionInput.value.trim();
+      if (!q) return;
+      addMessage('User', q);
+      questionInput.value = '';
+      const form = new FormData();
+      form.append('question', q);
+      const res = await fetch('/chat', { method: 'POST', body: form });
+      const data = await res.json();
+      addMessage('Bot', data.answer || data.error || '(no answer)');
+    }
+
+    sendBtn.onclick = sendQuestion;
+
+    questionInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendQuestion();
+      }
+    });
+  </script>
+</body>
+</html>
