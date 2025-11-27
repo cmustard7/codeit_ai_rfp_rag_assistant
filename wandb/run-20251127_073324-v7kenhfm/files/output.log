@@ -1,0 +1,31 @@
+[34m[1mwandb[0m: Detected [huggingface_hub.inference, openai] in use.
+[34m[1mwandb[0m: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+[34m[1mwandb[0m: For more information, check out the docs at: https://weave-docs.wandb.ai/
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/minhyuk/codeit_ai_rfp_rag_assistant/src/run_eval.py", line 173, in <module>
+    main()
+  File "/home/minhyuk/codeit_ai_rfp_rag_assistant/src/run_eval.py", line 122, in main
+    state = workflow.invoke(state)
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/pregel/main.py", line 3068, in invoke
+    for chunk in self.stream(
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/pregel/main.py", line 2643, in stream
+    for _ in runner.tick(
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/pregel/_runner.py", line 167, in tick
+    run_with_retry(
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/pregel/_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/_internal/_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/minhyuk/myenv/lib/python3.12/site-packages/langgraph/_internal/_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/minhyuk/codeit_ai_rfp_rag_assistant/src/nodes/answer.py", line 67, in answer_question
+    answer = response.content if isinstance(response.content, str) else str(response.content)
+                                            ^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'content'
+During task with name 'answer' and id '24013d0e-31d8-4e6f-0850-429dc4dce04f'

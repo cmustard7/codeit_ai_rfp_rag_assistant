@@ -1,0 +1,89 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            oxlontjdsdmuhi33x1ew3x9oj8unvyo6:
+                args:
+                    - --wandb-project
+                    - my-rag
+                    - --wandb-run
+                    - hf-Qwen3B
+                cpu_count: 2
+                cpu_count_logical: 4
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "50884108288"
+                        used: "42429632512"
+                email: dksksj12@gmail.com
+                executable: /home/minhyuk/myenv/bin/python
+                git:
+                    commit: 7ce811a09dfabda30c2bf4cbb544c93b79203062
+                    remote: git@github.com:cmustard7/codeit_ai_rfp_rag_assistant.git
+                gpu: NVIDIA L4
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 7424
+                      memoryTotal: "24152899584"
+                      name: NVIDIA L4
+                      uuid: GPU-7d6492ff-ca8c-383b-707f-fcc7ac76ae58
+                host: codeit-ai-rfp-rag-assistant
+                memory:
+                    total: "16767238144"
+                os: Linux-6.14.0-1017-gcp-x86_64-with-glibc2.39
+                program: -m src.run_eval
+                python: CPython 3.12.3
+                root: /home/minhyuk/codeit_ai_rfp_rag_assistant
+                startedAt: "2025-11-27T07:33:24.903566Z"
+                writerId: oxlontjdsdmuhi33x1ew3x9oj8unvyo6
+        m: []
+        python_version: 3.12.3
+        t:
+            "1":
+                - 1
+                - 11
+                - 49
+                - 92
+                - 95
+                - 105
+            "2":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 53
+                - 71
+                - 75
+                - 92
+                - 95
+                - 105
+            "3":
+                - 13
+                - 16
+            "4": 3.12.3
+            "5": 0.23.0
+            "6": 4.57.1
+            "12": 0.23.0
+            "13": linux-x86_64
+CHUNK_OVERLAP:
+    value: "300"
+CHUNK_SIZE:
+    value: "1400"
+ENABLE_BM25:
+    value: "1"
+ENABLE_MMR:
+    value: "1"
+ENABLE_PARAPHRASE:
+    value: "1"
+ENABLE_RERANK:
+    value: "1"
+PARAPHRASE_N:
+    value: "2"
+RERANK_MODEL:
+    value: BAAI/bge-reranker-v2-m3
+RERANK_SCORE_FLOOR:
+    value: "0.2"
+question_count:
+    value: 24

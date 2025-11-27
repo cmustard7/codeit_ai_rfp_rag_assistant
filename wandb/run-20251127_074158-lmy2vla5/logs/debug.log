@@ -1,0 +1,23 @@
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_setup.py:_flush():80] Configure stats pid to 1185846
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_setup.py:_flush():80] Loading settings from /home/minhyuk/.config/wandb/settings
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_setup.py:_flush():80] Loading settings from /home/minhyuk/codeit_ai_rfp_rag_assistant/wandb/settings
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_init.py:setup_run_log_directory():713] Logging user logs to /home/minhyuk/codeit_ai_rfp_rag_assistant/wandb/run-20251127_074158-lmy2vla5/logs/debug.log
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to /home/minhyuk/codeit_ai_rfp_rag_assistant/wandb/run-20251127_074158-lmy2vla5/logs/debug-internal.log
+2025-11-27 07:41:58,140 INFO    MainThread:1185846 [wandb_init.py:init():840] calling init triggers
+2025-11-27 07:41:58,141 INFO    MainThread:1185846 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'question_count': 24, 'ENABLE_MMR': '1', 'ENABLE_BM25': '1', 'ENABLE_PARAPHRASE': '1', 'PARAPHRASE_N': '2', 'ENABLE_RERANK': '1', 'RERANK_MODEL': 'BAAI/bge-reranker-v2-m3', 'RERANK_SCORE_FLOOR': '0.2', 'CHUNK_SIZE': '1400', 'CHUNK_OVERLAP': '300', '_wandb': {}}
+2025-11-27 07:41:58,141 INFO    MainThread:1185846 [wandb_init.py:init():888] starting backend
+2025-11-27 07:41:58,432 INFO    MainThread:1185846 [wandb_init.py:init():891] sending inform_init request
+2025-11-27 07:41:58,442 INFO    MainThread:1185846 [wandb_init.py:init():899] backend started and connected
+2025-11-27 07:41:58,449 INFO    MainThread:1185846 [wandb_init.py:init():969] updated telemetry
+2025-11-27 07:41:58,464 INFO    MainThread:1185846 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-27 07:41:58,923 INFO    MainThread:1185846 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-27 07:41:59,367 INFO    MainThread:1185846 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-27 07:41:59,368 INFO    MainThread:1185846 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-27 07:41:59,368 INFO    MainThread:1185846 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-27 07:41:59,368 INFO    MainThread:1185846 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-27 07:41:59,374 INFO    MainThread:1185846 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-27 07:43:01,911 INFO    wandb-AsyncioManager-main:1185846 [service_client.py:_forward_responses():80] Reached EOF.
+2025-11-27 07:43:01,912 INFO    wandb-AsyncioManager-main:1185846 [mailbox.py:close():137] Closing mailbox, abandoning 1 handles.
