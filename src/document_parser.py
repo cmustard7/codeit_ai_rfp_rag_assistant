@@ -11,6 +11,7 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 from typing import List
+import unicodedata
 
 import zlib
 import re
@@ -82,6 +83,11 @@ def _read_text_file(path: Path) -> str:
         except UnicodeDecodeError:
             continue
     return path.read_text(encoding="utf-8", errors="ignore")
+
+
+def _normalize_text(text: str) -> str:
+    """NFC 정규화를 적용해 한글/공백 차이로 인한 매칭 오류를 줄인다."""
+    return unicodedata.normalize("NFC", text)
 
 
 def _extract_xml_text(xml_content: str) -> str:
@@ -270,12 +276,12 @@ def _read_hwp(path: Path) -> str:
     if ENABLE_HWPX:
         parsed = _read_hwp_via_hwpx(path)
         if parsed:
-            parts.append(parsed)
+            parts.append(_normalize_text(parsed))
 
     # HWP→PDF 변환 후 PDF 파이프라인 시도 (표/이미지 보강 목적)
     pdf_parsed = _convert_hwp_to_pdf(path)
     if pdf_parsed:
-        parts.append(pdf_parsed)
+        parts.append(_normalize_text(pdf_parsed))
 
     # 이미 추출된 내용이 있다면 그대로 반환
     if parts:
@@ -325,9 +331,9 @@ def extract_text(file_name: str) -> str:
             STATS["text"] += 1
             return _read_text_file(path)
         if suffix == ".pdf":
-            return _read_pdf(path)
+            return _normalize_text(_read_pdf(path))
         if suffix in {".docx", ".doc"}:
-            return _read_docx(path)
+            return _normalize_text(_read_docx(path))
         if suffix == ".hwp":
             return _read_hwp(path)
         # 기타 포맷은 현재 미지원
@@ -350,9 +356,9 @@ def extract_text_from_path(path: Path) -> str:
         if suffix in {".txt", ".md", ".text", ".csv"}:
             return _read_text_file(path)
         if suffix == ".pdf":
-            return _read_pdf(path)
+            return _normalize_text(_read_pdf(path))
         if suffix in {".docx", ".doc"}:
-            return _read_docx(path)
+            return _normalize_text(_read_docx(path))
         if suffix == ".hwp":
             return _read_hwp(path)
         logger.info("지원되지 않는 확장자(%s)이므로 건너뜁니다.", suffix)

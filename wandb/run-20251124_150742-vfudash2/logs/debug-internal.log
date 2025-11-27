@@ -1,0 +1,11 @@
+{"time":"2025-11-24T15:07:45.0723328+09:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-24T15:07:45.5401143+09:00","level":"INFO","msg":"stream: created new stream","id":"vfudash2"}
+{"time":"2025-11-24T15:07:45.5401143+09:00","level":"INFO","msg":"handler: started","stream_id":"vfudash2"}
+{"time":"2025-11-24T15:07:45.5423335+09:00","level":"INFO","msg":"stream: started","id":"vfudash2"}
+{"time":"2025-11-24T15:07:45.5428934+09:00","level":"INFO","msg":"sender: started","stream_id":"vfudash2"}
+{"time":"2025-11-24T15:07:45.5423335+09:00","level":"INFO","msg":"writer: started","stream_id":"vfudash2"}
+{"time":"2025-11-24T15:07:55.9295459+09:00","level":"INFO","msg":"stream: closing","id":"vfudash2"}
+{"time":"2025-11-24T15:07:56.6645304+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-24T15:07:56.9309184+09:00","level":"INFO","msg":"handler: closed","stream_id":"vfudash2"}
+{"time":"2025-11-24T15:07:56.9352161+09:00","level":"INFO","msg":"sender: closed","stream_id":"vfudash2"}
+{"time":"2025-11-24T15:07:56.9352161+09:00","level":"INFO","msg":"stream: closed","id":"vfudash2"}

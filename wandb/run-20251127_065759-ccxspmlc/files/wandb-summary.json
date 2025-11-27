@@ -1,0 +1,1 @@
+{"latency_ms":28993.369500152767,"prompt_tokens":2898,"_timestamp":1.7641950363820174e+09,"question_id":"Q21","total_tokens":3689,"total_questions":21,"metadata_hits":3,"_runtime":754,"_step":20,"_wandb":{"runtime":754},"completion_tokens":791,"vector_hits":3,"avg_latency_ms":35898.255314300986}

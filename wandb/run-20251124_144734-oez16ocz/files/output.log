@@ -1,0 +1,58 @@
+[34m[1mwandb[0m: Detected [huggingface_hub.inference, openai] in use.
+[34m[1mwandb[0m: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+[34m[1mwandb[0m: For more information, check out the docs at: https://weave-docs.wandb.ai/
+F:\codeit_ai_rfp_rag_assistant\src\vector_store.py:115: LangChainDeprecationWarning: The class `Chroma` was deprecated in LangChain 0.2.9 and will be removed in 1.0. An updated version of the class exists in the `langchain-chroma package and should be used instead. To use it run `pip install -U `langchain-chroma` and import as `from `langchain_chroma import Chroma``.
+  return Chroma(persist_directory=str(CHROMA_DIR), embedding_function=embeddings)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 154, in <module>
+    main()
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 103, in main
+    state = workflow.invoke(state)
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3050, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2633, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 167, in tick
+    run_with_retry(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\src\nodes\answer.py", line 39, in answer_question
+    response = _llm.invoke(prompt)
+               ^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 373, in invoke
+    self.generate_prompt(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 784, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 1006, in generate
+    return self._generate_helper(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 810, in _generate_helper
+    self._generate(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 1500, in _generate
+    self._call(prompt, stop=stop, run_manager=run_manager, **kwargs)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_huggingface\llms\huggingface_endpoint.py", line 317, in _call
+    response_text = self.client.text_generation(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\huggingface_hub\inference\_client.py", line 2357, in text_generation
+    request_parameters = provider_helper.prepare_request(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\huggingface_hub\inference\_providers\_common.py", line 93, in prepare_request
+    provider_mapping_info = self._prepare_mapping_info(model)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\huggingface_hub\inference\_providers\_common.py", line 171, in _prepare_mapping_info
+    raise ValueError(
+ValueError: Model meta-llama/Meta-Llama-3-8B-Instruct is not supported for task text-generation and provider novita. Supported task: conversational.
+During task with name 'answer' and id '44a43b40-e5fd-5623-c54c-dc531f8fb0b0'

@@ -1,0 +1,65 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            tw0pr9p53du6rzfbh3rhoaa3lbi5syip:
+                args:
+                    - --wandb-project
+                    - my-rag
+                    - --wandb-run
+                    - camelot-only
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.8"
+                disk:
+                    /:
+                        total: "1000186310656"
+                        used: "891912884224"
+                email: dksksj12@gmail.com
+                executable: F:\codeit_ai_rfp_rag_assistant\.venv\Scripts\python.exe
+                git:
+                    commit: cd5aa0dab936dbe7fe480831b9f6fe7e2d338ede
+                    remote: https://github.com/cmustard7/codeit_ai_rfp_rag_assistant.git
+                gpu: NVIDIA GeForce RTX 4070 Ti
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 7680
+                      memoryTotal: "12878610432"
+                      name: NVIDIA GeForce RTX 4070 Ti
+                      uuid: GPU-ae74a6c4-0b11-6001-0358-1b71e969f242
+                host: DESKTOP-88AI8A6
+                memory:
+                    total: "51418107904"
+                os: Windows-11-10.0.26100-SP0
+                program: -m src.run_eval
+                python: CPython 3.12.10
+                root: F:\codeit_ai_rfp_rag_assistant
+                startedAt: "2025-11-21T07:18:28.644762Z"
+                writerId: tw0pr9p53du6rzfbh3rhoaa3lbi5syip
+        m: []
+        python_version: 3.12.10
+        t:
+            "1":
+                - 95
+                - 105
+            "2":
+                - 95
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+                - 62
+            "4": 3.12.10
+            "5": 0.23.0
+            "8":
+                - 3
+            "12": 0.23.0
+            "13": windows-amd64
+model:
+    value: gpt-5-mini
+question_count:
+    value: 26
+retrieval_top_k:
+    value: 2

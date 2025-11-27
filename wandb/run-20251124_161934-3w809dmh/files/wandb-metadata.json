@@ -1,0 +1,44 @@
+{
+  "os": "Windows-11-10.0.26100-SP0",
+  "python": "CPython 3.12.10",
+  "startedAt": "2025-11-24T07:19:34.658205Z",
+  "args": [
+    "--wandb-project",
+    "my-rag",
+    "--wandb-run",
+    "mistral-7b"
+  ],
+  "program": "-m src.run_eval",
+  "git": {
+    "remote": "https://github.com/cmustard7/codeit_ai_rfp_rag_assistant.git",
+    "commit": "344c966038357644afc37c315753e54e8dcc8aa7"
+  },
+  "email": "dksksj12@gmail.com",
+  "root": "F:\\codeit_ai_rfp_rag_assistant",
+  "host": "DESKTOP-88AI8A6",
+  "executable": "F:\\codeit_ai_rfp_rag_assistant\\.venv\\Scripts\\python.exe",
+  "cpu_count": 6,
+  "cpu_count_logical": 12,
+  "gpu": "NVIDIA GeForce RTX 4070 Ti",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1000186310656",
+      "used": "974311694336"
+    }
+  },
+  "memory": {
+    "total": "51418107904"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4070 Ti",
+      "memoryTotal": "12878610432",
+      "cudaCores": 7680,
+      "architecture": "Ada",
+      "uuid": "GPU-ae74a6c4-0b11-6001-0358-1b71e969f242"
+    }
+  ],
+  "cudaVersion": "12.8",
+  "writerId": "yhkjigt8wq2d88v895w17mucpl3qksiw"
+}

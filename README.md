@@ -40,16 +40,34 @@ pip install -r requirements.txt
 - Ghostscript(Camelot 테이블 추출) : `choco install ghostscript` 또는 `apt install ghostscript`
 - Java + hwp2hwpx 변환기 : hwp2hwpx.cmd/JAR 빌드 후 .env에 경로 설정
 - (선택) HWP→PDF 변환기 : LibreOffice/한컴 등 설치 후 .env에 HWP2PDF_BIN 지정
+  - Java/Maven이 필요합니다. (Windows: `choco install openjdk maven`, Linux: `sudo apt install openjdk-17-jdk maven`)
+  - hwp2hwpx 소스의 `pom.xml`에서 컴파일 버전을 11로 맞춥니다:
+    ```
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    ```
+  - 테스트는 건너뛰고 빌드:
+    `mvn -DskipTests=true clean package`
+  - 예시 cmd (Windows, hwp2hwpx 루트에 배치):
+    ```cmd
+    @echo off
+    set BASE=%~dp0
+    set JAR=%BASE%target\hwp2hwpx-1.0.0.jar
+    set DEP=%BASE%target\dependency
+    java -cp "%JAR%;%DEP%\*;%DEP%" Hwp2HwpxCli %*
+    ```
+    (.sh는 `java -cp "$JAR:$DEP/*" Hwp2HwpxCli "$@"` 형태)
+  - 빌드된 JAR을 hwp2hwpx.cmd/.sh로 실행하고, .env에 HWP2HWPX_BIN 경로 지정
 
 ## 환경 변수(.env 예시)
 ```
 OPENAI_API_KEY=sk-...
 ENABLE_HWPX=1
-HWP2HWPX_BIN=F:/hwp2hwpx/hwp2hwpx.cmd
+HWP2HWPX_BIN=설치경로/hwp2hwpx.cmd
 ENABLE_HWP_PDF=0
-HWP2PDF_BIN=F:/hwp2pdf.cmd
+HWP2PDF_BIN=설치경로/hwp2pdf.cmd
 ENABLE_PDF_HTML=1
-PDFTOHTML_BIN=F:/poppler-25.11.0/Library/bin/pdftohtml.exe
+PDFTOHTML_BIN=(설치경로)poppler-25.11.0/Library/bin/pdftohtml.exe
 ENABLE_PYMUPDF=0
 ENABLE_OCR=1
 ENABLE_CAMELOT=1

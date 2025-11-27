@@ -1,0 +1,36 @@
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_setup.py:_flush():80] Configure stats pid to 89892
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_setup.py:_flush():80] Loading settings from C:\Users\my\.config\wandb\settings
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_setup.py:_flush():80] Loading settings from F:\codeit_ai_rfp_rag_assistant\wandb\settings
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-24 14:44:07,533 INFO    MainThread:89892 [wandb_init.py:setup_run_log_directory():713] Logging user logs to F:\codeit_ai_rfp_rag_assistant\wandb\run-20251124_144407-bu1od1dn\logs\debug.log
+2025-11-24 14:44:07,535 INFO    MainThread:89892 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to F:\codeit_ai_rfp_rag_assistant\wandb\run-20251124_144407-bu1od1dn\logs\debug-internal.log
+2025-11-24 14:44:07,535 INFO    MainThread:89892 [wandb_init.py:init():840] calling init triggers
+2025-11-24 14:44:07,535 INFO    MainThread:89892 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'question_count': 26, '_wandb': {}}
+2025-11-24 14:44:07,535 INFO    MainThread:89892 [wandb_init.py:init():888] starting backend
+2025-11-24 14:44:09,847 INFO    MainThread:89892 [wandb_init.py:init():891] sending inform_init request
+2025-11-24 14:44:09,915 INFO    MainThread:89892 [wandb_init.py:init():899] backend started and connected
+2025-11-24 14:44:09,917 INFO    MainThread:89892 [wandb_init.py:init():969] updated telemetry
+2025-11-24 14:44:10,002 INFO    MainThread:89892 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-24 14:44:10,716 INFO    MainThread:89892 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-24 14:44:10,894 INFO    MainThread:89892 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-24 14:44:10,894 INFO    MainThread:89892 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-24 14:44:10,894 INFO    MainThread:89892 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-24 14:44:10,895 INFO    MainThread:89892 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-24 14:44:10,899 INFO    MainThread:89892 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-24 14:44:21,077 INFO    wandb-AsyncioManager-main:89892 [service_client.py:_forward_responses():80] Reached EOF.
+2025-11-24 14:44:21,078 INFO    wandb-AsyncioManager-main:89892 [mailbox.py:close():137] Closing mailbox, abandoning 1 handles.
+2025-11-24 14:44:22,103 ERROR   wandb-AsyncioManager-main:89892 [asyncio_manager.py:fn_wrap_exceptions():183] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\wandb\sdk\lib\asyncio_manager.py", line 181, in fn_wrap_exceptions
+    await fn()
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\wandb\sdk\lib\service\service_client.py", line 38, in publish
+    await self._send_server_request(request)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\wandb\sdk\lib\service\service_client.py", line 64, in _send_server_request
+    await self._writer.drain()
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\asyncio\streams.py", line 392, in drain
+    await self._protocol._drain_helper()
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\asyncio\streams.py", line 166, in _drain_helper
+    raise ConnectionResetError('Connection lost')
+ConnectionResetError: Connection lost

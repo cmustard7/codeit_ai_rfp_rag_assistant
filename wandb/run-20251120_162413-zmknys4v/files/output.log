@@ -1,0 +1,84 @@
+[34m[1mwandb[0m: Detected [openai] in use.
+[34m[1mwandb[0m: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+[34m[1mwandb[0m: For more information, check out the docs at: https://weave-docs.wandb.ai/
+F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\pydantic\v1\main.py:1054: UserWarning: LangSmith now uses UUID v7 for run and trace identifiers. This warning appears when passing custom IDs. Please use: from langsmith import uuid7
+            id = uuid7()
+Future versions will require UUID v7.
+  input_data = validator(cls_, input_data)
+Failed to multipart ingest runs: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('403 Client Error: Forbidden for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Forbidden"}\n')
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('403 Client Error: Forbidden for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Forbidden"}\n')
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 174, in <module>
+    main()
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 125, in main
+    state = workflow.invoke(state)
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3050, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2633, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 167, in tick
+    run_with_retry(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\src\nodes\retrieve.py", line 133, in retrieve_context
+    vector_hits = search_vectorstore(question, store, top_k=RETRIEVAL_TOP_K)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\src\vector_store.py", line 133, in search_vectorstore
+    embeddings = _ensure_embeddings()
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\src\vector_store.py", line 34, in _ensure_embeddings
+    return OpenAIEmbeddings(model=EMBED_MODEL)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\pydantic\main.py", line 250, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_openai\embeddings\base.py", line 383, in validate_environment
+    self.client = openai.OpenAI(**client_params, **sync_specific).embeddings  # type: ignore[arg-type]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\openai\_client.py", line 166, in __init__
+    super().__init__(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\openai\_base_client.py", line 864, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\openai\_base_client.py", line 794, in __init__
+    super().__init__(**kwargs)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 688, in __init__
+    self._transport = self._init_transport(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 731, in _init_transport
+    return HTTPTransport(
+           ^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_transports\default.py", line 153, in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_config.py", line 40, in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\ssl.py", line 707, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+KeyboardInterrupt
+Failed to send compressed multipart ingest: langsmith.utils.LangSmithError: Failed to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. HTTPError('403 Client Error: Forbidden for url: https://api.smith.langchain.com/runs/multipart', '{"error":"Forbidden"}\n')
+Exception ignored in: <module 'threading' from 'C:\\Users\\my\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\threading.py'>
+Traceback (most recent call last):
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1594, in _shutdown
+    atexit_call()
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 31, in _python_exit
+    t.join()
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1149, in join
+    self._wait_for_tstate_lock()
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1169, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt:

@@ -1,0 +1,11 @@
+{"time":"2025-11-24T16:21:18.5247688+09:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-24T16:21:18.9528429+09:00","level":"INFO","msg":"stream: created new stream","id":"ihicegmn"}
+{"time":"2025-11-24T16:21:18.9528429+09:00","level":"INFO","msg":"handler: started","stream_id":"ihicegmn"}
+{"time":"2025-11-24T16:21:18.9550026+09:00","level":"INFO","msg":"stream: started","id":"ihicegmn"}
+{"time":"2025-11-24T16:21:18.9550026+09:00","level":"INFO","msg":"sender: started","stream_id":"ihicegmn"}
+{"time":"2025-11-24T16:21:18.9550026+09:00","level":"INFO","msg":"writer: started","stream_id":"ihicegmn"}
+{"time":"2025-11-24T16:21:29.3497728+09:00","level":"INFO","msg":"stream: closing","id":"ihicegmn"}
+{"time":"2025-11-24T16:21:29.8670597+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-24T16:21:30.2096179+09:00","level":"INFO","msg":"handler: closed","stream_id":"ihicegmn"}
+{"time":"2025-11-24T16:21:30.2137951+09:00","level":"INFO","msg":"sender: closed","stream_id":"ihicegmn"}
+{"time":"2025-11-24T16:21:30.2137951+09:00","level":"INFO","msg":"stream: closed","id":"ihicegmn"}

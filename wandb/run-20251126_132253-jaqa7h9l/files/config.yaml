@@ -1,0 +1,65 @@
+_wandb:
+    value:
+        cli_version: 0.23.0
+        e:
+            5ytw4h063k9l8fza0x80kgp6eiva6eyb:
+                args:
+                    - --wandb-project
+                    - my-rag
+                    - --wandb-run
+                    - chunk1000-topk2
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.8"
+                disk:
+                    /:
+                        total: "1000186310656"
+                        used: "901427400704"
+                email: dksksj12@gmail.com
+                executable: F:\codeit_ai_rfp_rag_assistant\.venv\Scripts\python.exe
+                git:
+                    commit: 344c966038357644afc37c315753e54e8dcc8aa7
+                    remote: https://github.com/cmustard7/codeit_ai_rfp_rag_assistant.git
+                gpu: NVIDIA GeForce RTX 4070 Ti
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 7680
+                      memoryTotal: "12878610432"
+                      name: NVIDIA GeForce RTX 4070 Ti
+                      uuid: GPU-ae74a6c4-0b11-6001-0358-1b71e969f242
+                host: DESKTOP-88AI8A6
+                memory:
+                    total: "51418107904"
+                os: Windows-11-10.0.26100-SP0
+                program: -m src.run_eval
+                python: CPython 3.12.10
+                root: F:\codeit_ai_rfp_rag_assistant
+                startedAt: "2025-11-26T04:22:53.432721Z"
+                writerId: 5ytw4h063k9l8fza0x80kgp6eiva6eyb
+        m: []
+        python_version: 3.12.10
+        t:
+            "1":
+                - 1
+                - 49
+                - 92
+                - 95
+                - 105
+            "2":
+                - 1
+                - 49
+                - 92
+                - 95
+                - 105
+            "3":
+                - 13
+                - 16
+            "4": 3.12.10
+            "5": 0.23.0
+            "8":
+                - 3
+            "12": 0.23.0
+            "13": windows-amd64
+question_count:
+    value: 26

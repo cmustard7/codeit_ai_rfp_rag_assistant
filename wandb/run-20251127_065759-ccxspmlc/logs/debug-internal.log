@@ -1,0 +1,12 @@
+{"time":"2025-11-27T06:58:01.6251672+09:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-27T06:58:02.0119669+09:00","level":"INFO","msg":"stream: created new stream","id":"ccxspmlc"}
+{"time":"2025-11-27T06:58:02.0124715+09:00","level":"INFO","msg":"handler: started","stream_id":"ccxspmlc"}
+{"time":"2025-11-27T06:58:02.0135223+09:00","level":"INFO","msg":"stream: started","id":"ccxspmlc"}
+{"time":"2025-11-27T06:58:02.0135223+09:00","level":"INFO","msg":"writer: started","stream_id":"ccxspmlc"}
+{"time":"2025-11-27T06:58:02.0135223+09:00","level":"INFO","msg":"sender: started","stream_id":"ccxspmlc"}
+{"time":"2025-11-27T07:10:37.1322246+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-27T07:10:37.48316+09:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-11-27T07:10:37.4875033+09:00","level":"INFO","msg":"stream: closing","id":"ccxspmlc"}
+{"time":"2025-11-27T07:10:37.4875033+09:00","level":"INFO","msg":"handler: closed","stream_id":"ccxspmlc"}
+{"time":"2025-11-27T07:10:37.4875033+09:00","level":"INFO","msg":"sender: closed","stream_id":"ccxspmlc"}
+{"time":"2025-11-27T07:10:37.4880551+09:00","level":"INFO","msg":"stream: closed","id":"ccxspmlc"}

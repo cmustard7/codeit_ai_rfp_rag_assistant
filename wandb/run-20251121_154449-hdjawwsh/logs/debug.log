@@ -1,0 +1,26 @@
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_setup.py:_flush():80] Configure stats pid to 162624
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_setup.py:_flush():80] Loading settings from C:\Users\my\.config\wandb\settings
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_setup.py:_flush():80] Loading settings from F:\codeit_ai_rfp_rag_assistant\wandb\settings
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-21 15:44:49,610 INFO    MainThread:162624 [wandb_init.py:setup_run_log_directory():713] Logging user logs to F:\codeit_ai_rfp_rag_assistant\wandb\run-20251121_154449-hdjawwsh\logs\debug.log
+2025-11-21 15:44:49,612 INFO    MainThread:162624 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to F:\codeit_ai_rfp_rag_assistant\wandb\run-20251121_154449-hdjawwsh\logs\debug-internal.log
+2025-11-21 15:44:49,612 INFO    MainThread:162624 [wandb_init.py:init():840] calling init triggers
+2025-11-21 15:44:49,612 INFO    MainThread:162624 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'model': 'gpt-5-mini', 'retrieval_top_k': 2, 'question_count': 26, '_wandb': {}}
+2025-11-21 15:44:49,612 INFO    MainThread:162624 [wandb_init.py:init():888] starting backend
+2025-11-21 15:44:51,868 INFO    MainThread:162624 [wandb_init.py:init():891] sending inform_init request
+2025-11-21 15:44:51,925 INFO    MainThread:162624 [wandb_init.py:init():899] backend started and connected
+2025-11-21 15:44:51,926 INFO    MainThread:162624 [wandb_init.py:init():969] updated telemetry
+2025-11-21 15:44:51,994 INFO    MainThread:162624 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-21 15:44:52,654 INFO    MainThread:162624 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-21 15:44:52,725 INFO    MainThread:162624 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-21 15:44:52,725 INFO    MainThread:162624 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-21 15:44:52,726 INFO    MainThread:162624 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-21 15:44:52,726 INFO    MainThread:162624 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-21 15:44:52,730 INFO    MainThread:162624 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-21 15:55:24,859 INFO    MainThread:162624 [wandb_run.py:_finish():2270] finishing run dksksj12-student/my-rag/hdjawwsh
+2025-11-21 15:55:24,860 INFO    MainThread:162624 [wandb_run.py:_atexit_cleanup():2469] got exitcode: 0
+2025-11-21 15:55:24,860 INFO    MainThread:162624 [wandb_run.py:_restore():2451] restore
+2025-11-21 15:55:24,860 INFO    MainThread:162624 [wandb_run.py:_restore():2457] restore done
+2025-11-21 15:55:25,885 INFO    MainThread:162624 [wandb_run.py:_footer_sync_info():3853] logging synced files

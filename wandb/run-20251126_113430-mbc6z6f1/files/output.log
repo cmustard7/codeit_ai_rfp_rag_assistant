@@ -1,0 +1,112 @@
+[34m[1mwandb[0m: Detected [huggingface_hub.inference, openai] in use.
+[34m[1mwandb[0m: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+[34m[1mwandb[0m: For more information, check out the docs at: https://weave-docs.wandb.ai/
+Traceback (most recent call last):
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_sync\connection.py", line 101, in handle_request
+    raise exc
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_sync\connection.py", line 78, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_sync\connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_backends\sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 154, in <module>
+    main()
+  File "F:\codeit_ai_rfp_rag_assistant\src\run_eval.py", line 103, in main
+    state = workflow.invoke(state)
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3050, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2633, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 167, in tick
+    run_with_retry(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 42, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\src\nodes\answer.py", line 39, in answer_question
+    response = _llm.invoke(prompt)
+               ^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 373, in invoke
+    self.generate_prompt(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 784, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 1006, in generate
+    return self._generate_helper(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 810, in _generate_helper
+    self._generate(
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_core\language_models\llms.py", line 1500, in _generate
+    self._call(prompt, stop=stop, run_manager=run_manager, **kwargs)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\langchain_huggingface\llms\huggingface_endpoint.py", line 317, in _call
+    response_text = self.client.text_generation(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\huggingface_hub\inference\_client.py", line 2385, in text_generation
+    bytes_output = self._inner_post(request_parameters, stream=stream or False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\huggingface_hub\inference\_client.py", line 273, in _inner_post
+    response = self.exit_stack.enter_context(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 526, in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 868, in stream
+    response = self.send(
+               ^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\my\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "F:\codeit_ai_rfp_rag_assistant\.venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다
+During task with name 'answer' and id '6b1bf05f-6f8c-0129-a6d1-7de375265c4b'

@@ -1,0 +1,13 @@
+[34m[1mwandb[0m: Detected [openai] in use.
+[34m[1mwandb[0m: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
+[34m[1mwandb[0m: For more information, check out the docs at: https://weave-docs.wandb.ai/
+config.json: 100%|██████████████████████████████████████████████████████████| 795/795 [00:00<?, ?B/s]
+model.safetensors: 100%|████████████████████████████████████████| 2.27G/2.27G [00:26<00:00, 85.9MB/s]
+tokenizer_config.json: 1.17kB [00:00, 1.73MB/s]
+sentencepiece.bpe.model: 100%|██████████████████████████████████| 5.07M/5.07M [00:00<00:00, 12.0MB/s]
+tokenizer.json: 100%|███████████████████████████████████████████| 17.1M/17.1M [00:00<00:00, 40.8MB/s]
+special_tokens_map.json: 100%|██████████████████████████████████████████████| 964/964 [00:00<?, ?B/s]
+README.md: 17.2kB [00:00, ?B/s]
+F:\codeit_ai_rfp_rag_assistant\src\run_eval.py:132: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat() + "Z",
+저장 완료: data\results.json
