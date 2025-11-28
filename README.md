@@ -1,7 +1,7 @@
 # 입찰메이트 RFP RAG 시스템
 
 > 정부·공공 RFP 문서를 빠르게 파악해 컨설턴트가 바로 쓸 수 있는 답변을 주는 사내 RAG.  
-> 시나리오 B(클라우드 API)가 `main`, 시나리오 A(온프레미스 HF)가 `alpha` 브랜치입니다.
+> 시나리오 B(클라우드 API)가 `orprem-hf-clean`, 시나리오 A(온프레미스 HF)가 `alpha` 브랜치입니다.
 
 ## 브랜치/시나리오
 - **시나리오 B (main)**: OpenAI GPT-5 계열 + text-embedding-3-small, Chroma/JSON 벡터스토어, LangGraph 멀티서치, W&B 로깅.
@@ -29,6 +29,13 @@
 - **필수 외부 프로그램**: Poppler(pdftohtml), Java 11+ & Maven, hwp2hwpx(JAR 빌드) — 파싱 품질을 위해 반드시 준비해야 합니다.
 - **Python** 3.10+ & 가상환경
 - (선택) LibreOffice(HWP→PDF), Ghostscript, PaddleOCR/Tesseract, Camelot
+
+#### 협업 일지 링크
+- [김민혁 협업일지 (Project Manager)](https://www.notion.so/2a7b412cdba48007871de7b7ad623783)
+- [김남중 협업일지 (데이터 처리 담당)]()
+- [이현석 협업일지 (Retrieval 담당)]()
+- [이재영 협업일지 (Generation 담당)]()
+
 
 ## 실행 순서
 ```bash
