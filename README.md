@@ -43,7 +43,7 @@ LangGraph 기반으로 HWP/PDF RFP를 파싱 → 청킹 → 임베딩/벡터 저
 - 생성: 짧은 프롬프트, 불릿/길이 제한, “모른다” 처리, distillation(소형→대형) 옵션
 - 평가: Retrieval 정량지표 + LLM Judge(가짜 질문 시 “모른다” 채점)
 - 데모: FastAPI + 프론트(업로드→QA)
->>>>>>> b0458e2b420d0849fb337a0ba64f5d4fe65a0140
+
 
 #### 협업 일지 링크
 - [김민혁 협업일지 (Project Manager)](https://www.notion.so/2a7b412cdba48007871de7b7ad623783)
@@ -51,7 +51,7 @@ LangGraph 기반으로 HWP/PDF RFP를 파싱 → 청킹 → 임베딩/벡터 저
 - [이현석 협업일지 (Retrieval 담당)]()
 - [이재영 협업일지 (Generation 담당)]()
 
-<<<<<<< HEAD
+
 
 ## 실행 순서
 ```bash
@@ -151,7 +151,7 @@ ENABLE_PYMUPDF=0
 python -m venv .venv
 .venv/Scripts/activate  # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
->>>>>>> b0458e2b420d0849fb337a0ba64f5d4fe65a0140
+
 ```
 외부 툴(필요 시):
 - Poppler(pdftohtml/pdf2image) : `choco install poppler` 또는 `apt install poppler-utils`
@@ -177,7 +177,7 @@ pip install -r requirements.txt
     (.sh는 `java -cp "$JAR:$DEP/*" Hwp2HwpxCli "$@"` 형태)
   - 빌드된 JAR을 hwp2hwpx.cmd/.sh로 실행하고, .env에 HWP2HWPX_BIN 경로 지정
 
-<<<<<<< HEAD
+
 ## 외부 도구 설치
 - **Poppler(pdftohtml)**:  
   - Windows: zip 설치 후 `PDFTOHTML_BIN=C:/.../poppler.../bin/pdftohtml.exe`  
@@ -324,4 +324,4 @@ ENABLE_BM25=1
 - HWPX 변환 실패 시 OLE로 폴백하므로, 변환기 경로가 올바른지 수동 테스트로 확인하세요.  
 - PDF 손상 시 PyMuPDF를 끄고(pdfplumber+pdftohtml/OCR만 사용) 에러를 줄일 수 있습니다.  
 - 외부 툴 미설치 시 Camelot/OCR 기능이 자동으로 스킵될 수 있습니다.
->>>>>>> b0458e2b420d0849fb337a0ba64f5d4fe65a0140
+
