@@ -1,125 +1,147 @@
-# LangGraph RAG Starter
+# 입찰메이트 RFP RAG 파이프라인
 
-이 프로젝트는 LangGraph 기반으로 RAG 파이프라인을 빠르게 구성하기 위한 최소 템플릿입니다. 모든 스크립트는 `src/` 디렉터리에 정리되어 있으며, 문서 파싱(HWP 포함)부터 벡터스토어 구축, LangGraph 워크플로 실행, GPT-5 기반 평가까지 한 번에 수행할 수 있습니다.
+LangGraph 기반으로 HWP/PDF RFP를 파싱 → 청킹 → 임베딩/벡터 저장 → 질의응답/평가를 수행합니다. HWPX 변환, PDF 테이블/Camelot, OCR(PaddleOCR), 멀티쿼리+리랭커까지 옵션으로 포함되어 있으며 웹 데모(업로드→QA)도 제공됩니다.
 
-## 구성
+## 아키텍처 요약
+- 입력: HWP/PDF 업로드 → 파싱(HWPX 우선, 실패 시 OLE / PDF는 pdfplumber+pdftohtml+OCR/Camelot)
+- 청킹: 헤더/목차 기반, CHUNK_SIZE/OVERLAP(기본 1400/300), 표/이미지 텍스트 포함
+- 임베딩/저장: OpenAI 또는 HF 임베딩 → Chroma/JSON/FAISS
+- 검색: MMR+BM25 하이브리드, 멀티쿼리 패러프레이즈, 리랭커(score floor)
+- 생성: 짧은 프롬프트, 불릿/길이 제한, “모른다” 처리, distillation(소형→대형) 옵션
+- 평가: Retrieval 정량지표 + LLM Judge(가짜 질문 시 “모른다” 채점)
+- 데모: FastAPI + 프론트(업로드→QA)
+
+#### 협업 일지 링크
+- [김민혁 협업일지 (Project Manager)]()
+- [김남중 협업일지 (데이터 처리 담당)]()
+- [이현석 협업일지 (Retrieval 담당)]()
+- [이재영 협업일지 (Generation 담당)]()
+
+## 폴더 구성
 ```
-LangGraph_rag/
-├── README.md
-├── requirements.txt
-├── data/
-│   ├── data_list.csv|xlsx   # 기관/사업 메타데이터
-│   ├── files/               # 원본 문서(HWP/PDF/DOCX 등)
-│   ├── questions.json       # 평가용 질문(자동 생성)
-│   ├── results.json         # run_eval 결과
-│   └── eval/                # judge 평가 결과 등
-└── src/
-    ├── build_vectorstore.py # data/files → vectorstore.json 생성
-    ├── data_loader.py       # data_list.* + 문서 본문 로딩
-    ├── document_parser.py   # TXT/PDF/DOCX/HWP 파서
-    ├── evaluate_llm_judge.py # GPT-5 기반 자동 평가 스크립트
-    ├── generate_questions.py # 메타데이터 기반 질문 생성
-    ├── graph_state.py       # LangGraph 상태 정의
-    ├── nodes/               # LangGraph 노드(question/retrieve/answer/update)
-    ├── run_chat.py          # 대화형 테스트 CLI
-    ├── run_eval.py          # 질문 세트 일괄 평가
-    ├── text_chunker.py      # 청킹 유틸
-    ├── vector_store.py      # 임베딩 생성/검색 헬퍼
-    └── workflow.py          # LangGraph DAG 정의
-```
-
-## 데이터 준비
-- `data/data_list.csv` 또는 `data/data_list.xlsx` : 기관/사업 메타데이터. 열 이름은 자유롭게 사용하되, 아래 키 중 하나와 매칭되면 자동으로 인식됩니다.
-  - 기관 : `발주 기관`, `발주기관`, `agency`
-  - 사업명 : `사업명`, `project_name`, `title`
-  - 요약 : `사업 요약`, `요약`, `summary`
-- `data/files/` : 실제 문서 디렉터리. HWP/PDF/DOCX/TXT 등을 지원하며, 없으면 `data_list`의 `텍스트` 열을 사용합니다.
-
-## 빠른 시작
-1. 가상환경 생성 및 패키지 설치
-   ```bash
-   python -m venv .venv
-   .venv/Scripts/activate   # Windows
-   pip install -r requirements.txt
-   ```
-2. `.env` 에 OpenAI API Key 설정
-   ```bash
-   echo OPENAI_API_KEY=sk-... > .env
-   ```
-3. 질문 생성
-   ```bash
-   python -m src.generate_questions
-   # (--limit, --follow-up 옵션으로 샘플 수/후속 질문 여부 조정 가능)
-   ```
-4. 벡터스토어 구축 (최초 1회 혹은 데이터 변경 시)
-   ```bash
-   python -m src.build_vectorstore
-   ```
-5. LangGraph 워크플로 실행
-   ```bash
-   python -m src.run_eval
-   # (--questions, --output 옵션으로 경로 변경 가능)
-   ```
-6. 대화형 테스트 (선택)
-   ```bash
-   python -m src.run_chat
-   # 'exit' 입력 시 종료, --reset 옵션으로 매 질문마다 상태 초기화 가능
-   ```
-7. GPT-5 Judge 평가 (선택)
-   ```bash
-   python -m src.evaluate_llm_judge --results data/results.json --output data/eval/judge_scores.json
-   # --model gpt-5-nano 처럼 Judge 모델을 지정할 수 있습니다.
-   ```
-8. Retrieval 정량 평가 (선택)
-   ```bash
-   python -m src.evaluate_retrieval --results data/results.json --gold data/gold_targets.json --output data/eval/retrieval_scores.json
-   ```
-
-### 주요 CLI 옵션
-- `generate_questions`
-  - `--limit <int>`: data_list 상단에서 몇 개의 행을 사용할지 지정 (기본 100).
-  - `--follow-up`: 각 사업에 대해 후속 질문 추가 생성 여부(플래그).
-  - `--csv/--xlsx/--output <path>`: 입력/출력 경로 지정.
-  - `--shuffle`: 데이터를 무작위로 섞은 뒤 limit 만큼 추출.
-  - `--fake-rate <float>`: 0~1 값, 문서에 존재하지 않을 가능성이 높은 질문을 섞어 생성.
-  - `--compare-rate <float>`: 0~1 값, 서로 다른 두 문서를 비교하는 질문을 추가 생성.
-- `run_eval`
-  - `--questions <path>`: 기본 `data/questions.json` 대신 다른 질문 파일 사용.
-  - `--output <path>`: 결과 JSON 저장 위치 지정.
-- `run_chat`
-  - `--reset`: 매 질문마다 상태 초기화(기본은 세션 상태 유지).
-- `build_vectorstore`
-  - `--output <path>`: 생성된 벡터스토어 JSON 위치 지정.
-- `evaluate_llm_judge`
-  - `--results <path>`: 평가할 run_eval 결과 경로 지정.
-  - `--output <path>`: Judge 결과 저장 경로 지정.
-  - `--limit <int>`: 평가 샘플 수 제한.
-  - `--model <name>`: 사용할 GPT-5 계열 Judge 모델 명 (기본 `gpt-5-mini`).
-- `evaluate_retrieval`
-  - `--results <path>`: run_eval 결과 JSON (context/retrieved_docs 포함).
-  - `--gold <path>`: 정답 매핑 JSON.
-  - `--output <path>`: 평가 지표 저장 경로 지정.
-
-#### 정답 매핑 JSON 예시 (`data/gold_targets.json`)
-```json
-{
-  "gold": [
-    {
-      "id": "Q01",
-      "expected_files": [
-        "국민연금공단_이러닝_사업.hwp",
-        "국민연금공단_이러닝_사업.pdf"
-      ],
-      "keywords": [
-        "콘텐츠 개발",
-        "학습관리"
-      ]
-    }
-  ]
-}
+.
+├── app.py / index.html        # 업로드→QA 웹 데모 (FastAPI)
+├── src/
+│   ├── document_parser.py     # HWPX/힙(hwp2hwpx), PDF→HTML/OCR, Camelot, OLE 폴백
+│   ├── text_chunker.py        # 헤더/목차 기반 청킹, CHUNK_SIZE/OVERLAP
+│   ├── vector_store.py        # 임베딩/검색, MMR, BM25 하이브리드
+│   ├── nodes/answer.py        # 프롬프트/답변, distillation 옵션
+│   ├── nodes/retrieve.py      # 멀티쿼리, 리랭커, score floor
+│   ├── run_eval.py            # 질문 세트 일괄 실행
+│   ├── evaluate_retrieval.py  # 정량 리트리버 평가
+│   ├── evaluate_llm_judge.py  # LLM Judge 평가(가짜 질문 “모른다” 처리 포함)
+│   └── generate_questions.py  # data_list 기반 질문/가짜 질문 생성
+├── data/                      # data_list, files, questions/results/gold/eval
+└── scripts/                   # 파서 통계/누락 체크 등 유틸
 ```
 
-## TODO
-- Retrieval 단계 정량 평가(Recall@K 등) 도입
-- Judge 프롬프트 고도화 및 다중 기준 점수화
-- CI 파이프라인에 자동 평가 통합
+## 설치
+```bash
+python -m venv .venv
+.venv/Scripts/activate  # Linux/macOS: source .venv/bin/activate
+pip install -r requirements.txt
+```
+외부 툴(필요 시):
+- Poppler(pdftohtml/pdf2image) : `choco install poppler` 또는 `apt install poppler-utils`
+- Ghostscript(Camelot 테이블 추출) : `choco install ghostscript` 또는 `apt install ghostscript`
+- Java + hwp2hwpx 변환기 : hwp2hwpx.cmd/JAR 빌드 후 .env에 경로 설정
+- (선택) HWP→PDF 변환기 : LibreOffice/한컴 등 설치 후 .env에 HWP2PDF_BIN 지정
+  - Java/Maven이 필요합니다. (Windows: `choco install openjdk maven`, Linux: `sudo apt install openjdk-17-jdk maven`)
+  - hwp2hwpx 소스의 `pom.xml`에서 컴파일 버전을 11로 맞춥니다:
+    ```
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    ```
+  - 테스트는 건너뛰고 빌드:
+    `mvn -DskipTests=true clean package`
+  - 예시 cmd (Windows, hwp2hwpx 루트에 배치):
+    ```cmd
+    @echo off
+    set BASE=%~dp0
+    set JAR=%BASE%target\hwp2hwpx-1.0.0.jar
+    set DEP=%BASE%target\dependency
+    java -cp "%JAR%;%DEP%\*;%DEP%" Hwp2HwpxCli %*
+    ```
+    (.sh는 `java -cp "$JAR:$DEP/*" Hwp2HwpxCli "$@"` 형태)
+  - 빌드된 JAR을 hwp2hwpx.cmd/.sh로 실행하고, .env에 HWP2HWPX_BIN 경로 지정
+
+## 환경 변수(.env 예시)
+```
+OPENAI_API_KEY=sk-...
+ENABLE_HWPX=1
+HWP2HWPX_BIN=설치경로/hwp2hwpx.cmd
+ENABLE_HWP_PDF=0
+HWP2PDF_BIN=설치경로/hwp2pdf.cmd
+ENABLE_PDF_HTML=1
+PDFTOHTML_BIN=(설치경로)poppler-25.11.0/Library/bin/pdftohtml.exe
+ENABLE_PYMUPDF=0
+ENABLE_OCR=1
+ENABLE_CAMELOT=1
+ENABLE_RERANK=1
+RERANK_MODEL=BAAI/bge-reranker-v2-m3
+RERANK_TOP_N=12
+RERANK_SCORE_FLOOR=0.2
+ENABLE_PARAPHRASE=1
+PARAPHRASE_N=2
+CHUNK_SIZE=1400
+CHUNK_OVERLAP=300
+ENABLE_MMR=1
+ENABLE_BM25=1
+# LLM_PROVIDER=hf
+# HF_LLM_MODEL=Qwen/Qwen2.5-3B-Instruct
+# HF_ENDPOINT_URL=http://127.0.0.1:8080   # TGI 등에서 열린 엔드포인트
+# HUGGINGFACEHUB_API_TOKEN=hf_...     # 토큰 값
+# HF_LLM_TASK=text-generation  
+```
+※ 온프레미스(HF)로 전환 시 EMBED_PROVIDER/LLM_PROVIDER=hf, HF_* 모델명을 지정.
+
+## 실행 흐름
+1) 질문 생성  
+`python -m src.generate_questions --follow-up --fake-rate 0.2 --compare-rate 0.1`
+2) 벡터스토어 구축  
+`python -m src.build_vectorstore`
+3) 일괄 평가 실행  
+`python -m src.run_eval --wandb-project my-rag --wandb-run <name>`
+4) 리트리버 정량 평가  
+`python -m src.evaluate_retrieval --results data/results.json --gold data/gold_targets.json`
+5) LLM Judge  
+`python -m src.evaluate_llm_judge --results data/results.json --model gpt-5-nano`
+6) 웹 데모 (업로드→QA)  
+`uvicorn app:app --reload --port 8000` 후 http://localhost:8000 접속  
+   - 파일 업로드가 끝나면 채팅창이 노출됩니다. (Drag&Drop/파일 선택)
+
+## 주요 기능/옵션
+- 파싱: HWP→HWPX(우선), 실패 시 OLE 폴백. PDF는 pdfplumber+pdftohtml, OCR(PaddleOCR), Camelot 테이블 추출. PyMuPDF는 옵션(기본 OFF).
+- 검색: MMR, BM25 하이브리드, 멀티쿼리 패러프레이즈, 리랭커(score floor 포함).
+- 생성: 짧은 시스템 프롬프트, 길이/불릿 제한, “모른다” 응답 가이드, distillation(소형→대형 LLM) 옵션.
+- 평가: gold_targets 기반 Precision/Recall/F1, Judge는 가짜 질문 시 “모른다”를 긍정 채점.
+- 실험 로깅: wandb/LangSmith로 토큰/지연/리트리버 설정 기록.
+
+## 시나리오 A/B 비교
+- 시나리오 A(온프레미스/HF): HF 임베딩/LLM, Chroma/FAISS 로컬 저장. 비용↓, 설치/자원↑.
+- 시나리오 B(클라우드/OpenAI): OpenAI 임베딩/LLM, Chroma/JSON. 세팅 간단, 비용/토큰 관리 필요.
+
+## 팀 역할
+- 파이프라인/아키텍처: LangGraph DAG, 프롬프트/QA 흐름 정의
+- 파싱/데이터: HWPX/표/OCR 개선, 파일명 정규화, 청킹 전략
+- 검색/리랭크: 멀티쿼리, BM25 하이브리드, 리랭커/스코어 튜닝, top-k 실험
+- 모델/생성: LLM 선택(HF/클라우드), 프롬프트 압축, distillation 플로우
+- 평가/로그: gold_targets 관리, Judge/리트리버 지표, wandb/LangSmith 보드 작성
+- 프론트/데모: 업로드→QA 웹 UI, 에러 핸들링, 배포 스크립트
+
+### 팀 진행 노트
+- 김민혁(팀장): 전체 일정/의사결정 관리, 파서·웹 데모 품질 확인
+- 김남중: HWP 파서( hwp2hwpx + hwpx-owpml-model 검토), pdfplumber/pdftohtml, 이미지 OCR(Tesseract 계획) 실험
+- 이현석: 시맨틱+메타데이터 멀티서치, distillation/프롬프트 최적화, rerank 점검, wandb 실험 구조화
+- 이재영: Generation 프롬프트/토큰 최적화, 질문 템플릿 고도화
+
+## 개선 아이디어
+- 표/이미지 특화 파서 추가, 손상 PDF 대비 파서 우선순위 자동 조정
+- 리랭커/멀티쿼리 파라미터 자동 탐색, 후보 문서 수 동적 조절
+- “모른다” 검출 스코어 임계값 학습, 히스토리 요약 품질 개선
+- CI 파이프라인에 소규모 샘플 평가 포함하여 회귀 방지
+
+## 유지보수 메모
+- HWPX 변환 실패 시 OLE로 폴백하므로, 변환기 경로가 올바른지 수동 테스트로 확인하세요.  
+- PDF 손상 시 PyMuPDF를 끄고(pdfplumber+pdftohtml/OCR만 사용) 에러를 줄일 수 있습니다.  
+- 외부 툴 미설치 시 Camelot/OCR 기능이 자동으로 스킵될 수 있습니다.
