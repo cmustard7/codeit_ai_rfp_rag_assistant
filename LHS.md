@@ -134,8 +134,6 @@
 
 ### 3.2 Phase 2: LangGraph Base (Adaptive Retrieval, 11월 14-17일)
 
-### 3.2 Phase 2: LangGraph Base (Adaptive Retrieval, 11월 14-17일)
-
 #### 핵심 개선
 1. **평가 LLM 도입**: GPT-5-mini를 사용하여 생성된 답변의 품질을 자동으로 평가 (Score ≥ 0.75 기준)
 2. **순회구조 구현**: 검색 → 답변 생성 → 평가 → (필요 시) 재검색의 반복 흐름
