@@ -12,7 +12,7 @@ LangGraph 기반으로 HWP/PDF RFP를 파싱 → 청킹 → 임베딩/벡터 저
 - 데모: FastAPI + 프론트(업로드→QA)
 
 #### 협업 일지 링크
-- [김민혁 협업일지 (Project Manager)]()
+- [김민혁 협업일지 (Project Manager)](https://www.notion.so/2a7b412cdba48007871de7b7ad623783)
 - [김남중 협업일지 (데이터 처리 담당)]()
 - [이현석 협업일지 (Retrieval 담당)]()
 - [이재영 협업일지 (Generation 담당)]()
